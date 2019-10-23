@@ -1,14 +1,26 @@
 const express = require("express");
 const router = express.Router();
 
-const Review = require("../models/Review");
+const Review = require("../../models/Review");
 
 // GET REQUEST
 // Public
 
 router.get("/", (req, res) => {
   Review.find()
+    .sort({ date: -1 })
     .then(review => res.json(review))
+    .catch(err => console.log(err));
+});
+
+router.get("/:id", (req, res) => {
+  Review.findById(req.params.id)
+    .then(review => {
+      if (!review) {
+        return res.status(400).end();
+      }
+      return res.status(200).json(review);
+    })
     .catch(err => console.log(err));
 });
 
@@ -26,6 +38,11 @@ router.post("/", (req, res) => {
     readLink: req.body.readLink,
     shopLink: req.body.shopLink,
     ytVideo: req.body.ytVideo,
+    categories: req.body.categories,
+    type: {
+      anime: req.body.type.anime,
+      manga: req.body.type.manga
+    },
     ratings: {
       overall: {
         B: req.body.ratings.overall.B,
@@ -72,6 +89,17 @@ router.post("/", (req, res) => {
     .save()
     .then(review => res.json(review))
     .catch(err => console.log(err));
+});
+
+router.put("/:id", (req, res) => {
+  const id = req.params.id;
+  Review.findById(id, (err, review) => {
+    review.likes = req.body.likes;
+    review
+      .save()
+      .then(review => res.json(review))
+      .catch(err => console.log(err));
+  });
 });
 
 module.exports = router;

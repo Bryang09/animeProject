@@ -4,7 +4,8 @@ const bodyParser = require("body-parser");
 
 const app = express();
 
-const reviews = require("./routes/Routes");
+const reviews = require("./routes/api/Reviews");
+const lists = require("./routes/api/Lists");
 
 app.use(bodyParser.json());
 
@@ -16,6 +17,7 @@ mongoose
   .catch(err => console.log(err));
 
 app.use("/api/reviews", reviews);
+app.use("/api/lists", lists);
 
 const port = process.env.PORT || 5000;
 

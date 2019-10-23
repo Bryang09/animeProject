@@ -10,6 +10,16 @@ const ReviewSchema = new Schema({
     type: Number,
     required: true
   },
+  type: {
+    anime: {
+      type: Boolean,
+      required: true
+    },
+    manga: {
+      type: Boolean,
+      required: true
+    }
+  },
 
   backgroundImage: {
     type: String,
@@ -77,6 +87,11 @@ const ReviewSchema = new Schema({
       B: { type: String, required: true },
       M: { type: String, required: true }
     }
+  },
+  categories: { type: Object },
+  date: {
+    type: Date,
+    default: Date.now()
   }
 });
 
